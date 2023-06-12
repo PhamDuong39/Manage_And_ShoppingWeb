@@ -26,7 +26,7 @@ namespace Data.ShopContext
         {
 
 
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-50K05FU\\SQLEXPRESS;Initial Catalog = DbCS5_Test;Integrated Security=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer("Data Source=LAPTOP-25M23VCQ\\SQLEXPRESS;Initial Catalog = ShoeShop_DB;Integrated Security=True;Trust Server Certificate=True");
 
 
         }

@@ -58,51 +58,50 @@
 						<img src="~/images/anhbanh.jpg" height="100px">
 					}
 				</td>
-				<td>	
-					
-						<!-- Nút giảm số lượng -->
-						@*<input type="submit" name="quantity" value="-"/>*@
-						<!-- Số lượng hiện tại -->
-						<span>@item.quantity</span>
-						<!-- Nút tăng số lượng -->
-						@*<input type="submit" name="quantity" value="+"/>*@
+				<td>
+
+					<!-- Nút giảm số lượng -->
+					@*<input type="submit" name="quantity" value="-"/>*@
+					<!-- Số lượng hiện tại -->
+					<span>@item.quantity</span>
+					<!-- Nút tăng số lượng -->
+					@*<input type="submit" name="quantity" value="+"/>*@
 				</td>
 				<td>
 					@item.price
 				</td>
 				<td style="color: red">
 					@item.ToTalPrice
-					 <a style="color:black">VND</a>
+					<a style="color:black">VND</a>
 				</td>
 				<td>
 					@*@Html.ActionLink("Details", "Details", new {  id=item.Id  }) |*@
 					<button>@Html.ActionLink("Delete", "Delete2", new {  id=item.Id  })</button>
-				</td>		
+				</td>
 			</tr>
-			
 		}
-		
+
 
 	</tbody>
 </table>
 @{
 	int sumPrice = 0;
 }
-@foreach(var item in Model){
+@foreach (var item in Model)
+{
 	int totalPrice = item.quantity * item.price;
 	sumPrice += totalPrice;
 }
 <h3>Tổng Thanh Toán : <a style="color:red">@sumPrice</a> <a style="color:black">VND</a> </h3>
 <center>
 	<form method="post" asp-action="Pay" asp-controller="CartDetail">
-		<input type="hidden" name="IdUser" value="edb21b08-3af8-46f5-d9ae-08db3a8c7f0b" /> @*id đg fix cung*@
-		<button type="submit" style="background-color: red">
-			<div class="d-flex justify-content-between">
-				<span>
-					Thanh toán
-				</span>
-			</div>
-		</button>
-	</form>
+        <button type="submit" style="background-color: red">
+            <div class="d-flex justify-content-between">
+                <span>
+                    Thanh toán
+                </span>
+            </div>
+        </button>
+    </form>
 </center>
 
