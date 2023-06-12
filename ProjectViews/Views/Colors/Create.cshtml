@@ -1,0 +1,34 @@
+﻿@model Data.Models.Colors
+
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>Create Color</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <p>Your Chose Color : <span id="value"></span></p>
+            <div class="form-group">
+                <input asp-for="ColorName" type="color" id="colorPicker"/>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>
+<script>
+    var colorPicker = document.getElementById("colorPicker");
+    var value = document.getElementById("value");
+    value.innerHTML = colorPicker.value;
+    colorPicker.oninput = function() {
+        value.innerHTML = this.value.toString();
+    }
+</script>

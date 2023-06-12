@@ -1,0 +1,213 @@
+﻿@using Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model Data.Models.ShoeDetails
+
+@{
+    ViewData["Title"] = "Details";
+    HttpClient _httpClient = new HttpClient();
+    List<string> imageExtensions = new List<string>()
+    {
+        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+    };
+    string apiUrls = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+    var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
+    string apiDatas = await responses.Content.ReadAsStringAsync(); // doc data tra ve
+    var shoeDetails = JsonConvert.DeserializeObject<List<ShoeDetails>>(apiDatas);
+    //lay dữ liệu color từ bảng Color
+    string apiUrlcolr = $"https://localhost:7109/api/Color/get-all-colors";
+    var responsecolr = await _httpClient.GetAsync(apiUrlcolr);
+    string apiDatacolr = await responsecolr.Content.ReadAsStringAsync();
+    var colors = JsonConvert.DeserializeObject<List<Colors>>(apiDatacolr);
+    //lay dữ liệu size từ bảng Size
+    string apiUrlsize = $"https://localhost:7109/api/Size/get-all-size";
+    var responsesize = await _httpClient.GetAsync(apiUrlsize);
+    string apiDatasize = await responsesize.Content.ReadAsStringAsync();
+    var sizes = JsonConvert.DeserializeObject<List<Sizes>>(apiDatasize);
+    //lay du lieu tu bang colorshoe
+    string apiUrlsize_shoeDetail = $"https://localhost:7109/api/SIzes_ShoeDetails/get-all-size-shoe-details";
+    var responsesize_shoeDetail = await _httpClient.GetAsync(apiUrlsize_shoeDetail);
+    string apiDatasize_shoeDetail = await responsesize_shoeDetail.Content.ReadAsStringAsync();
+    var size_shoeDetails = JsonConvert.DeserializeObject<List<Sizes_ShoeDetails>>(apiDatasize_shoeDetail);
+    //lay du lieu tu bang color_shoeDetail
+    string apiUrlcolor_shoeDetail = $"https://localhost:7109/api/Color_ShoeDetails/get-all-color_shoeDetails";
+    var apiDatacolor_shoeDetail = await _httpClient.GetAsync(apiUrlcolor_shoeDetail);
+    string apiColorShoesDetails = await apiDatacolor_shoeDetail.Content.ReadAsStringAsync();
+    var color_shoeDetails = JsonConvert.DeserializeObject<List<Color_ShoeDetails>>(apiColorShoesDetails);
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ShoeDetails</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Supplier
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string apiUrl1 = "https://localhost:7109/api/Suppliers/get-all-supplier";
+                var response1 = await _httpClient.GetAsync(apiUrl1);
+                string apidata1 = await response1.Content.ReadAsStringAsync();
+                var sp = JsonConvert.DeserializeObject<List<Supplier>>(apidata1);
+                var supplier = sp.Where(x => x.Id == Model.IdSupplier).FirstOrDefault();
+            }
+            @Html.DisplayFor(model => supplier.Address)
+        </dd>
+        <dt class="col-sm-2">
+            Category
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string apiUrl = $"https://localhost:7109/api/Categories/get-all-categories";
+                var response = await _httpClient.GetAsync(apiUrl);
+                string apidata = await response.Content.ReadAsStringAsync();
+                var cat = JsonConvert.DeserializeObject<List<Categories>>(apidata);
+                var category = cat.Where(x => x.Id == Model.IdCategory).FirstOrDefault();
+            }
+            @Html.DisplayFor(model => category.CategoryName)
+        </dd>
+        <dt class="col-sm-2">
+            Brands
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string apiUrl2 = $"https://localhost:7109/api/Brands/get-all-brands";
+                var response2 = await _httpClient.GetAsync(apiUrl2);
+                string apidata2 = await response2.Content.ReadAsStringAsync();
+                var br = JsonConvert.DeserializeObject<List<Brands>>(apidata2);
+                //load du lieu vao dropdownlist
+                var brand = br.Where(x => x.Id == Model.IdBrand).FirstOrDefault();
+            }
+            @Html.DisplayFor(model => brand.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Cost Price
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CostPrice)
+        </dd>
+        <dt class="col-sm-2">
+            Sell Price
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SellPrice)
+        </dd>
+        <dt class="col-sm-2">
+            Available Quantity
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AvailableQuantity)
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if (Model.Status == 1)
+                {
+                    <span class="text-success">Active</span>
+                }
+                else
+                {
+                    <span class="text-danger">Inactive</span>
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Sale Name
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string apiUrl3 = $"https://localhost:7109/api/Sales/Show-Sales";
+                var response3 = await _httpClient.GetAsync(apiUrl3);
+                string apidata3 = await response3.Content.ReadAsStringAsync();
+                var sl = JsonConvert.DeserializeObject<List<Sales>>(apidata3);
+                var sale = sl.Where(x => x.Id == Model.IdSale).FirstOrDefault();
+            }
+            @Html.DisplayFor(model => sale.SaleName)
+        </dd>
+        <dt class="col-md-2">
+            Size
+        </dt>
+        <dd class="col-md-10">
+            @{
+                var size = sizes.FirstOrDefault(p => p.Id == size_shoeDetails.FirstOrDefault(p => p.IdShoeDetails == Model.Id).IdSize).SizeNumber;
+            }
+            @size
+        </dd>
+        <dt class="col-md-2">
+            Color
+        </dt>
+        <dd class="col-md-10">
+            @{
+                var idColor = color_shoeDetails.FirstOrDefault(p => p.IdShoeDetail == Model.Id).IdColor;
+                var colorName = colors.FirstOrDefault(p => p.Id == idColor).ColorName;
+            }
+            <span class="dot" style="background-color: #@colorName"></span>
+        </dd>
+        <dt class="col-md-2">
+            Image
+        </dt>
+        <dd class="col-md-10">
+            @{
+                string apiUrlImage = $"https://localhost:7109/api/Images/get-all-image";
+                var respo = await _httpClient.GetAsync(apiUrlImage);
+                var apiimage = await respo.Content.ReadAsStringAsync();
+                var images = JsonConvert.DeserializeObject<List<Images>>(apiimage);
+                var imageShoe = images.FirstOrDefault(p => p.IdShoeDetail == Model.Id);
+            }
+            @if (imageShoe == null)
+            {
+                <p>No image Create Now ? <a asp-action="Create" asp-controller="Images">Create Now?</a></p>
+            }
+            else
+            {
+                <img src="~/images/@imageShoe.ImageSource" height="100px">
+            }
+        </dd>
+        <dt class="col-md-2">
+            Decsription
+        </dt>
+        <dd class="col-md-10">
+            @{
+                string url = $"https://localhost:7109/api/Descriptions/get-all";
+                var reo = _httpClient.GetAsync(url);
+                var apiDataDis = await reo.Result.Content.ReadAsStringAsync();
+                var des = JsonConvert.DeserializeObject<List<Descriptions>>(apiDataDis);
+                var description = des.FirstOrDefault(p => p.IdShoeDetail == Model.Id);
+            }
+            @if (description == null)
+            {
+                <p>No description Create Now ? <a asp-action="Create" asp-controller="Description">Create Now?</a></p>
+            }
+            else
+            {
+                @description.Note1
+                <br>
+                @description.Note2
+                <br>
+                @description.Note3
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Show">Back to List</a>
+</div>
+<style>
+    .dot {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+</style>

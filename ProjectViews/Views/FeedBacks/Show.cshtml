@@ -1,0 +1,78 @@
+﻿@using Data.Models;
+@using Newtonsoft.Json;
+@model IEnumerable<Data.Models.Feedbacks>
+
+@{
+    ViewData["Title"] = "Show";
+    HttpClient _httpClient = new HttpClient();
+    string apiUrl = "https://localhost:7109/api/User/get-all-user";
+    var response = await _httpClient.GetAsync(apiUrl);
+    string apidata = await response.Content.ReadAsStringAsync();
+    var users = JsonConvert.DeserializeObject<List<Users>>(apidata);
+    ViewData["lstUser"] = new SelectList(users, "Id", "Username");
+
+    string apiUrlShoeDetail = "https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+    var responseShoeDetail = await _httpClient.GetAsync(apiUrlShoeDetail);
+    string apidataShoeDetail = await responseShoeDetail.Content.ReadAsStringAsync();
+    var ShoeDetail = JsonConvert.DeserializeObject<List<ShoeDetails>>(apidataShoeDetail);
+    ViewData["lstshoedetails"] = new SelectList(ShoeDetail, "Id", "Name");
+}
+<h1>Show</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatingStar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShoeDetails)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatingStar)
+            </td>
+            <td>
+ 
+                    @foreach (var shoedetails in ViewData["lstshoedetails"] as SelectList)
+                    {
+                        if (shoedetails.Value == item.IdShoeDetail.ToString())
+                        {
+                            @shoedetails.Text ;
+                        }
+                    }
+            </td>
+            <td>
+                    @foreach (var user in ViewData["lstUser"] as SelectList)
+                    {
+                        if (user.Value == item.IdUser.ToString())
+                        {
+                            @user.Text ;
+                        }
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

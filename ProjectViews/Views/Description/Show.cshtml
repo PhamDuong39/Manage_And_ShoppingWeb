@@ -1,0 +1,76 @@
+﻿@using Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model IEnumerable<Data.Models.Descriptions>
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Show";
+}
+@if (Model.Count() == 0)
+{
+    <h1>There is no data <a asp-action="Create">Create Now ?</a></h1>
+}
+else
+{
+    <h1>Show</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note3)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        //lay du lieu shoes
+                        string apiUrls = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+                        var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
+                        string apiDatas = await responses.Content.ReadAsStringAsync();// doc data tra ve
+                        var shoeDetails = JsonConvert.DeserializeObject<IEnumerable<ShoeDetails>>(apiDatas); // chuyen data thanh list
+                        var shoe = shoeDetails.Where(x => x.Id == item.IdShoeDetail).FirstOrDefault(); // lay du lieu theo id
+                    }
+                    @Html.DisplayFor(modelItem => shoe.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note3)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Update", new { id=item.Id}) |
+                    @Html.ActionLink("Details", "Detail", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @foreach (var item in Model)
+    {
+        item.Note1 = item.Note1.Replace("\n", "<br />");
+    }
+}

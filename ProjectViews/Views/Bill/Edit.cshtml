@@ -1,0 +1,125 @@
+﻿@using Data.Models;
+@using Newtonsoft.Json;
+@model Data.Models.Bills
+@{
+    
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Bills</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-select" >
+                    <option value="1">Đợi xác nhận</option>
+                    <option value="2">Đang giao</option>
+                    <option value="3">Đã giao</option>
+                    <option value="0">Đã bị hủy</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdUser" class="control-label"></label>
+                @{
+                    HttpClient _httpClient = new HttpClient();
+                    string apiURLuser = $"https://localhost:7109/api/User/get-all-user";
+                    var responseGetuser = await _httpClient.GetAsync(apiURLuser);
+                    string apiDatauser = await responseGetuser.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<List<Users>>(apiDatauser);
+                }
+                <select asp-for="IdUser" class="form-select">
+                    <option selected>Select User</option>
+                    @foreach (var item in user)
+                    {
+                        <option value="@item.Id">@item.Username</option>
+                    }
+                </select>
+                <span asp-validation-for="IdUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCoupon" class="control-label"></label>
+                @{
+                    _httpClient = new HttpClient();
+                    string apiURLCoupon = $"https://localhost:7109/api/Coupons/Show-Coupons";
+                    var responseGetCoupon = await _httpClient.GetAsync(apiURLCoupon);
+                    string apiDataCoupon = await responseGetCoupon.Content.ReadAsStringAsync();
+                    var coupon = JsonConvert.DeserializeObject<List<Coupons>>(apiDataCoupon);
+                }
+                <select asp-for="IdCoupon" class="form-select">
+                    <option selected>Select Coupon</option>
+                    @foreach (var item in coupon)
+                    {
+                        <option value="@item.Id">@item.VoucherName - @item.DiscountValue</option>
+                    }
+                </select>
+                <span asp-validation-for="IdCoupon" class="text-danger"></span>
+            </div>
+            <div style="display=none;" class="form-group">
+                <label asp-for="IdPaymentMethod" class="control-label"></label>
+                @{
+                    _httpClient = new HttpClient();
+                    string apiURLPayment = $"https://localhost:7109/api/PaymentMethod";
+                    var responseGetPayment = await _httpClient.GetAsync(apiURLPayment);
+                    string apiDataPayment = await responseGetPayment.Content.ReadAsStringAsync();
+                    var paymentMethod = JsonConvert.DeserializeObject<List<PaymentMethods>>(apiDataPayment);
+                }
+                <select asp-for="IdPaymentMethod" class="form-select">
+                    <option selected>Select Payment Method</option>
+                    @foreach (var item in paymentMethod)
+                    {
+                        <option value="@item.Id">@item.NameMethod</option>
+                    }
+                </select>
+                <span asp-validation-for="IdPaymentMethod" class="text-danger"></span>
+            </div>
+            <div style="display=none;" class="form-group">
+                <label asp-for="IdShipAdressMethod" class="control-label"></label>
+                @{
+                    _httpClient = new HttpClient();
+                    string apiURLShip = $"https://localhost:7109/api/ShipMethod";
+                    var responseGetShip = await _httpClient.GetAsync(apiURLShip);
+                    string apiDataShip = await responseGetShip.Content.ReadAsStringAsync();
+                    var shipMethod = JsonConvert.DeserializeObject<List<ShipAdressMethod>>(apiDataShip);
+                }
+                <select asp-for="IdShipAdressMethod" class="form-select">
+                    <option selected>Select Ship Method</option>
+                    @foreach (var item in shipMethod)
+                    {
+                        <option value="@item.Id">@item.NameAddress - @item.Price</option>
+                    }
+                </select>
+                <span asp-validation-for="IdShipAdressMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdLocation" class="control-label"></label>
+                <input asp-for="IdLocation" class="form-control" />
+                <span asp-validation-for="IdLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>
+

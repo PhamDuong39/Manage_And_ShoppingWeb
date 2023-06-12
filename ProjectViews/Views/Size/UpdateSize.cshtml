@@ -1,0 +1,38 @@
+﻿@model Data.Models.Sizes
+
+@{
+    ViewData["Title"] = "UpdateSize";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>UpdateSize</h1>
+
+<h4>Sizes</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateSize">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <p>Your Chose : <span id="size">0</span></p>
+            <div class="form-group">
+                <input asp-for="SizeNumber" class="form-control mt-4" type="range" min="1" max="50" id="sizeRange"/>
+                <span asp-validation-for="SizeNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ShowSize">Back to List</a>
+</div>
+<script>
+    var slider = document.getElementById("sizeRange");
+    var output = document.getElementById("size");
+    output.innerHTML = slider.value;
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script>

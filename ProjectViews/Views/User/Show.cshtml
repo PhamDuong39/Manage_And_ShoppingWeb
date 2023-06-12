@@ -1,0 +1,93 @@
+﻿@using Data.Models;
+@using Newtonsoft.Json;
+@model IEnumerable<Data.Models.Users>
+
+@{
+    ViewData["Title"] = "Show";
+    HttpClient _httpClient = new HttpClient();
+    string apiUrl = "https://localhost:7109/api/Role/get-all-role";
+    var response = await _httpClient.GetAsync(apiUrl);
+    string apidata = await response.Content.ReadAsStringAsync();
+    var roles = JsonConvert.DeserializeObject<List<Roles>>(apidata);
+    ViewData["lstrole"] = new SelectList(roles, "Id", "RoleName");
+
+    var x = "**************";
+}
+<h1>Show</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phonenumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+               @x
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+              @x
+            </td>
+            <td>
+                @x
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fullname)
+            </td>
+            <td>
+                    @foreach (var role in ViewData["lstrole"] as SelectList)
+                    {
+                        if (role.Value == item.IdRole.ToString())
+                        {
+                            @role.Text ;
+                        }
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editfull</a>
+                <a asp-action="Edit2" asp-route-id="@item.Id">Editstatus</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

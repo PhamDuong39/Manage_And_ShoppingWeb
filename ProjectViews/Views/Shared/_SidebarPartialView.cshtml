@@ -1,0 +1,121 @@
+﻿
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <!-- PAYMENT -->
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Quản lý thanh toán</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a  asp-controller="Bill" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý Hóa Đơn</span>
+                    </a>
+                    <a  asp-controller="PaymentMethod" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Phương thức thanh toán</span>
+                    </a>
+                    <a  asp-controller="ShipMethod" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Phương thức vận chuyển</span>
+                    </a>
+                    <a  asp-controller="Location" asp-action="ShowAllLocation" class="">
+                        <i class="bi bi-circle"></i><span>Địa điểm</span>
+                    </a>
+                   
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+
+
+        <!-- USER -->
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#tables-nav-1" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Quản lý thông tin người dùng</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav-1" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+
+                    <a asp-controller="User" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý tài khoản</span>
+
+                    </a>
+                    <a asp-controller="Role" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý quyền</span>
+                    </a>
+                    <a asp-controller="AchivePoint" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Số điểm tích lũy</span>
+                    </a>
+
+                    <a asp-controller="FeedBacks" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý phản hồi</span>
+                    </a>
+
+
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+
+        <!-- EVENT SALE COUPON -->
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#tables-nav-2" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Quản lý mã, sự kiện giảm giá</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav-2" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a asp-controller="" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý mã giảm giá hóa đơn</span>
+                    </a>
+                    <a asp-controller="Role" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý quyền</span>
+                    </a>
+                    <a asp-controller="AchivePoint" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Số điểm tích lũy</span>
+                    </a>
+                    <a asp-controller="FeedBacks" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý phản hồi</span>
+                    </a>
+
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+
+        <!-- SHOE PRODUCT -->
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#tables-nav-3" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Quản lý sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav-3" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a asp-controller="ShoesDetails" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý sản phẩm</span>
+                    </a>
+                    <a asp-controller="Brands" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý nhãn hiệu sản phẩm</span>
+                    </a>
+                    <a asp-controller="Supplier" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý nhà cung cấp</span>
+                    </a>
+                    <a asp-controller="Description" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý mô tả sản phẩm</span>
+                    </a>
+                    <a asp-controller="Colors" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý màu sắc</span>
+                    </a>
+                    <a asp-controller="Size" asp-action="ShowSize" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý kích cỡ</span>
+                    </a>
+                    <a asp-controller="Images" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý hình ảnh mô tả</span>
+                    </a>
+                    <a asp-controller="Categories" asp-action="Show" class="">
+                        <i class="bi bi-circle"></i><span>Quản lý danh mục sản phẩm</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+    </ul>
+</aside>

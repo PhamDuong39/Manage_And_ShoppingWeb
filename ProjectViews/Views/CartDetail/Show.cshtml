@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ProjectViews.Models.CartDetailModel>;
+@{
+	ViewData["Title"] = "Show";
+}
+<h1>Giỏ Hàng</h1>
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Sản phẩm
+			</th>
+			<th>
+				Số lượng
+			</th>
+			<th>
+				Đơn Giá
+			</th>
+			<th style="color:blue">
+				Số tiền
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@item.name
+				</td>
+				<td>	
+					
+						<!-- Nút giảm số lượng -->
+						@*<input type="submit" name="quantity" value="-"/>*@
+						<!-- Số lượng hiện tại -->
+						<span>@item.quantity</span>
+						<!-- Nút tăng số lượng -->
+						@*<input type="submit" name="quantity" value="+"/>*@
+				</td>
+				<td>
+					@item.price
+				</td>
+				<td style="color: red">
+					@item.ToTalPrice
+					 <a style="color:black">VND</a>
+				</td>
+				<td>
+					@*@Html.ActionLink("Details", "Details", new {  id=item.Id  }) |*@
+					<button>@Html.ActionLink("Delete", "Delete", new {  id=item.Id  })</button>
+				</td>		
+			</tr>
+			
+		}
+		
+
+	</tbody>
+</table>
+@{
+	int sumPrice = 0;
+}
+@foreach(var item in Model){
+	int totalPrice = item.quantity * item.price;
+	sumPrice += totalPrice;
+}
+<h3>Tổng Thanh Toán : <a style="color:red">@sumPrice</a> <a style="color:black">VND</a> </h3>
+
+

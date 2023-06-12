@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Data.Models.Colors>
+
+@{
+    ViewData["Title"] = "Leu leu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@if (Model.Count() == 0)
+{
+    <h1>No Color in here <a asp-action="Create">Create New</a> now ?</h1>
+}
+else
+{
+    <h1>Manager Colors</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ColorName)
+            </th>
+            <th>
+                Control
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="color" value="#@item.ColorName"/> <span>#@item.ColorName</span>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Detail", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+

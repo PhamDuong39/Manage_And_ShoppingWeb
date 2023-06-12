@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Data.Models.Carts>
+
+@{
+    ViewData["Title"] = "Show";
+}
+
+<h1>Show</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUser)
+            </td>
+            <td>
+                @* @Html.ActionLink("Edit", "Edit", new {  id=item.IdUser  }) |*@
+                @*@Html.ActionLink("Details", "Details", new {  id=item.IdUser  }) |*@
+                @Html.ActionLink("Delete", "Delete", new {  id = item.IdUser  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

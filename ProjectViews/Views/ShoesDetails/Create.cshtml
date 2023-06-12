@@ -1,0 +1,200 @@
+﻿@using Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model Data.Models.ShoeDetails
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ShoeDetails</h4>
+<hr />
+<style>
+    label {
+        font-weight: bold;
+        color: #000;
+    }
+
+    select, option {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid #000;
+        background-color: yellow;
+    }
+
+</style>
+<div class="row">
+    <form asp-action="Create" id="form">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label">Supplier </label>
+                @{
+                    //lay du lieu tu bang Supplier
+                    string apiUrl1 = "https://localhost:7109/api/Suppliers/get-all-supplier";
+                    var response1 = await _httpClient.GetAsync(apiUrl1);
+                    string apidata1 = await response1.Content.ReadAsStringAsync();
+                    var sp = JsonConvert.DeserializeObject<List<Supplier>>(apidata1);
+                    //load du lieu vao dropdownlist
+                    <select asp-for="IdSupplier" class="form-select">
+                        <option selected>Select Supplier</option>
+                        @foreach (var item in sp)
+                        {
+                            <option value="@item.Id">@item.Address</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label">Category</label>
+                @{
+                    // lay du lieu tu bang Category
+                    string apiUrl = $"https://localhost:7109/api/Categories/get-all-categories";
+                    var response = await _httpClient.GetAsync(apiUrl);
+                    string apidata = await response.Content.ReadAsStringAsync();
+                    var cat = JsonConvert.DeserializeObject<List<Categories>>(apidata);
+                    //load du lieu vao dropdownlist
+                    <select asp-for="IdCategory" class="form-select">
+                        <option selected>Select Category</option>
+                        @foreach (var item in cat)
+                        {
+                            <option value="@item.Id">@item.CategoryName</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBrand" class="control-label">Brands</label>
+                @{
+                    //lay du lieu tu bang Brand
+                    string apiUrl2 = $"https://localhost:7109/api/Brands/get-all-brands";
+                    var response2 = await _httpClient.GetAsync(apiUrl2);
+                    string apidata2 = await response2.Content.ReadAsStringAsync();
+                    var br = JsonConvert.DeserializeObject<List<Brands>>(apidata2);
+                    //load du lieu vao dropdownlist
+                    <select asp-for="IdBrand" class="form-select">
+                        <option selected>Select Brand</option>
+                        @foreach (var item in br)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostPrice" class="control-label"></label>
+                <input asp-for="CostPrice" class="form-control" />
+                <span asp-validation-for="CostPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SellPrice" class="control-label"></label>
+                <input asp-for="SellPrice" class="form-control" />
+                <span asp-validation-for="SellPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvailableQuantity" class="control-label"></label>
+                <input asp-for="AvailableQuantity" class="form-control" />
+                <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-select">
+                    <option selected>Select Brand</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdSale" class="control-label">Sale Name</label>
+                @{
+                    //lay du lieu sale
+                    string apiUrl3 = $"https://localhost:7109/api/Sales/Show-Sales";
+                    var response3 = await _httpClient.GetAsync(apiUrl3);
+                    string apidata3 = await response3.Content.ReadAsStringAsync();
+                    var sl = JsonConvert.DeserializeObject<List<Sales>>(apidata3);
+                    //load du lieu vao dropdownlist
+                    <select asp-for="IdSale" class="form-select">
+                        <option selected>Select Sale</option>
+                        @foreach (var item in sl)
+                        {
+                            <option value="@item.Id">@item.SaleName</option>
+                        }
+                    </select>
+                }
+
+            </div>
+            <div class="form-group mt-3">
+                @{
+                    //lay du lieu size
+                    string apiUrl4 = $"https://localhost:7109/api/Size/get-all-size";
+                    var response4 = await _httpClient.GetAsync(apiUrl4);
+                    string apidata4 = await response4.Content.ReadAsStringAsync();
+                    var sz = JsonConvert.DeserializeObject<List<Sizes>>(apidata4);
+                    //load du lieu vao dropdownlist Checkbox
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chose Size
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @foreach (var item in sz)
+                            {
+                                <input type="checkbox" name="sizesList" value="@item.Id" class="form-check-input" /> @item.SizeNumber
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <div class="form-group mt-3">
+                @{
+                    //lay du lieu size
+                    string apiUrl5 = $"https://localhost:7109/api/Color/get-all-colors";
+                    var response5 = await _httpClient.GetAsync(apiUrl5);
+                    string apidata5 = await response5.Content.ReadAsStringAsync();
+                    var cl = JsonConvert.DeserializeObject<List<Colors>>(apidata5);
+                    //load du lieu vao dropdownlist Checkbox
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chose Color
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            @foreach (var item in cl)
+                            {
+                                <input type="checkbox" name="colorsList" value="@item.Id" class="form-check-input" />
+                                <span class="dot" style="background-color: #@item.ColorName"></span>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group mt-5 mb-4">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="button" value="Clear Form" class="btn btn-danger" onclick="clearForm()" />
+        </div>
+    </form>
+</div>
+<style>
+    .dot {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+</style>
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>
+<script>
+    function clearForm() {
+        document.getElementById("form").reset();
+    }
+</script>

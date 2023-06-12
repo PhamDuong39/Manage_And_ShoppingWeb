@@ -1,0 +1,71 @@
+﻿@using Data.Models;
+@using Newtonsoft.Json;
+@model Data.Models.Feedbacks
+
+@{
+    ViewData["Title"] = "Details";
+    HttpClient _httpClient = new HttpClient();
+    string apiUrl = "https://localhost:7109/api/User/get-all-user";
+    var response = await _httpClient.GetAsync(apiUrl);
+    string apidata = await response.Content.ReadAsStringAsync();
+    var users = JsonConvert.DeserializeObject<List<Users>>(apidata);
+    ViewData["lstUser"] = new SelectList(users, "Id", "Username");
+
+    string apiUrlShoeDetail = "https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+    var responseShoeDetail = await _httpClient.GetAsync(apiUrlShoeDetail);
+    string apidataShoeDetail = await responseShoeDetail.Content.ReadAsStringAsync();
+    var ShoeDetail = JsonConvert.DeserializeObject<List<ShoeDetails>>(apidataShoeDetail);
+    ViewData["lstshoedetails"] = new SelectList(ShoeDetail, "Id", "Name");
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Feedbacks</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RatingStar)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RatingStar)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoeDetails)
+        </dt>
+        <dd class = "col-sm-10">
+            @foreach (var shoedetails in ViewData["lstshoedetails"] as SelectList)
+            {
+                if (shoedetails.Value == Model.IdShoeDetail.ToString())
+                {
+                    @shoedetails.Text
+                    ;
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Users)
+        </dt>
+        <dd class = "col-sm-10">
+            @foreach (var user in ViewData["lstUser"] as SelectList)
+            {
+                if (user.Value == Model.IdUser.ToString())
+                {
+                    @user.Text
+                    ;
+                }
+            }
+         
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

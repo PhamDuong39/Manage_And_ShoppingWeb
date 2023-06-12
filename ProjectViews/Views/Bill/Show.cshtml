@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Data.Models.Bills>
+
+@{
+    ViewData["Title"] = "Show";
+}
+
+<h1>Show</h1>
+
+@if (Model.Count() == 0)
+{
+    <h1>There are no bill in the database </h1>
+}
+else
+{
+    <form action="/Bill/Show" method="get">
+        <label for="pageSize">Số lượng hiển thị:</label>
+        <select id="pageSize" name="pageSize">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        <input type="submit" value="Xem">
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Users)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+
+                        @if (item.Status == 1)
+                        {
+                            <p>Đợi xác nhận</p>
+                        }
+                        @if (item.Status == 2)
+                        {
+                            <p>Đang giao</p>
+                        }
+                        @if (item.Status == 3)
+                        {
+                            <p>Đã được giao</p>
+                        }
+                        @if (item.Status == 0)
+                        {
+                            <p>Đã hủy</p>
+                        }
+                    </td>
+
+                    <td>
+                        @foreach (var user in ViewData["lstUser"] as SelectList)
+                        {
+                            if (user.Value == item.IdUser.ToString())
+                            {
+                                @user.Text
+                            }
+                        }
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        @if (ViewBag.HasPreviousPage)
+        {
+            <a href="@Url.Action("Show", new { page = ViewBag.PreviousPage })">Previous</a>
+        }
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <span>@i</span>
+            }
+            else
+            {
+                <a href="@Url.Action("Show", new { page = i })">@i</a>
+            }
+        }
+
+        @if (ViewBag.HasNextPage)
+        {
+            <a href="@Url.Action("Show", new { page = ViewBag.NextPage })">Next</a>
+        }
+    </div>
+
+
+}
+

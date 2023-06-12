@@ -1,0 +1,91 @@
+﻿@using Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model Data.Models.Descriptions
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Create";
+    string apiUrls = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+    var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
+    string apiDatas = await responses.Content.ReadAsStringAsync(); // doc data tra ve
+    var shoeDetails = JsonConvert.DeserializeObject<List<ShoeDetails>>(apiDatas);
+    //lay dữ liệu color từ bảng Color
+    string apiUrlcolr = $"https://localhost:7109/api/Color/get-all-colors";
+    var responsecolr = await _httpClient.GetAsync(apiUrlcolr);
+    string apiDatacolr = await responsecolr.Content.ReadAsStringAsync();
+    var colors = JsonConvert.DeserializeObject<List<Colors>>(apiDatacolr);
+    //lay dữ liệu size từ bảng Size
+    string apiUrlsize = $"https://localhost:7109/api/Size/get-all-size";
+    var responsesize = await _httpClient.GetAsync(apiUrlsize);
+    string apiDatasize = await responsesize.Content.ReadAsStringAsync();
+    var sizes = JsonConvert.DeserializeObject<List<Sizes>>(apiDatasize);
+    //lay du lieu tu bang Brand
+    string apiUrlbrand = $"https://localhost:7109/api/Brand/get-all-brands";
+    var responsebrand = await _httpClient.PostAsync(apiUrlbrand, null);
+    string apiDatabrand = await responsebrand.Content.ReadAsStringAsync();
+    var brands = JsonConvert.DeserializeObject<List<Brands>>(apiDatabrand);
+    //lay du lieu tu bang size_shoeDetail
+    string apiUrlsize_shoeDetail = $"https://localhost:7109/api/SIzes_ShoeDetails/get-all-size-shoe-details";
+    var responsesize_shoeDetail = await _httpClient.GetAsync(apiUrlsize_shoeDetail);
+    string apiDatasize_shoeDetail = await responsesize_shoeDetail.Content.ReadAsStringAsync();
+    var size_shoeDetails = JsonConvert.DeserializeObject<List<Sizes_ShoeDetails>>(apiDatasize_shoeDetail);
+    //lay du lieu tu bang color_shoeDetail
+    string apiUrlcolor_shoeDetail = $"https://localhost:7109/api/Color_ShoeDetails/get-all-color_shoeDetails";
+    var apiDatacolor_shoeDetail = await _httpClient.GetAsync(apiUrlcolor_shoeDetail);
+    string apiColorShoesDetails = await apiDatacolor_shoeDetail.Content.ReadAsStringAsync();
+    var color_shoeDetails = JsonConvert.DeserializeObject<List<Color_ShoeDetails>>(apiColorShoesDetails);
+}
+
+<h1>Create</h1>
+
+<h4>Descriptions</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger">Shoe name</div>
+            <div class="form-group">
+                @{
+                    //lay data tu bang ShoeDetail
+                    string apiUrls = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+                    var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
+                    string apiDatas = await responses.Content.ReadAsStringAsync(); // doc data tra ve
+                    var shoeDetails = JsonConvert.DeserializeObject<List<ShoeDetails>>(apiDatas);
+                    <select asp-for="IdShoeDetail" class="form-select">
+                        <option>Chose Shoes </option>
+                        @foreach (var item in shoeDetails)
+                        {
+                            var colorDetails = color_shoeDetails.FirstOrDefault(p => p.IdShoeDetail == item.Id).IdColor;
+                            var sizeDetails = size_shoeDetails.FirstOrDefault(p => p.IdShoeDetails == item.Id).IdSize;
+                            // string colorNamr = colors.FirstOrDefault(p => p.Id == color_shoeDetails.FirstOrDefault(p => p.IdShoeDetail == item.Id).IdColor).ColorName;
+                            <option value="@item.Id"> @item.Name - @sizes.FirstOrDefault(p => p.Id == sizeDetails).SizeNumber - @colors.FirstOrDefault(p => p.Id == colorDetails).ColorName </option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Note1" class="control-label"></label>
+                <textarea asp-for="Note1" class="form-control" id="tiny"></textarea>
+                <span asp-validation-for="Note1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note2" class="control-label"></label>
+                <textarea asp-for="Note2" class="form-control" id="tiny"></textarea>
+                <span asp-validation-for="Note2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note3" class="control-label"></label>
+                <textarea asp-for="Note3" class="form-control" id="tiny"></textarea>
+                <span asp-validation-for="Note3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>

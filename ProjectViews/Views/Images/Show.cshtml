@@ -1,0 +1,78 @@
+﻿@using Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model IEnumerable<Data.Models.Images>
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Show";
+    List<string> imageExtensions = new List<string>()
+    {
+        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+    };
+}
+@if (Model.Count() == 0)
+{
+    <h1>There are no images <a asp-action="Create">Create Now?</a></h1>
+}
+else
+{
+    <h1>Manager</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Shoes Name
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Control
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @* Gộp những sản phẩm có cùng id lại*@
+        @{
+            var  x = Model.GroupBy(x => x.IdShoeDetail).Select(x => x.First()).ToList();
+
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        //lay data tu bang ShoeDetail
+                        string apiUrls = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
+                        var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
+                        string apiDatas = await responses.Content.ReadAsStringAsync(); // doc data tra ve
+                        var shoeDetails = JsonConvert.DeserializeObject<List<ShoeDetails>>(apiDatas);
+                        var shoeDetail = shoeDetails.FirstOrDefault(x => x.Id == item.IdShoeDetail);
+                    }
+                    @shoeDetail.Name
+                </td>
+                <td>
+                    @{ string extension = System.IO.Path.GetExtension(item.ImageSource); }
+                    @if (imageExtensions.Contains(extension.Trim()))
+                    {
+                        <img src="~/images/@item.ImageSource" height="100px">
+                    }
+                    else
+                    {
+                        <img src="~/images/anhbanh.jpg" height="100px">
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Update", new {  id=item.Id }) |
+                    @Html.ActionLink("Details", "Detail", new {  id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

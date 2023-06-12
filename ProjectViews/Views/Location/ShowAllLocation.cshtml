@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Data.Models.Location>
+
+@{
+    ViewData["Title"] = "ShowAllLocation";
+}
+
+<h1>ShowAllLocation</h1>
+
+
+
+@if (Model.Count() == 0)
+{
+    <h1>There are no Location in the database <a asp-action="CreateLocation">Create New ?</a> </h1>
+}
+else
+{
+    <form action="/Location/ShowAllLocation" method="get">
+        <label for="pageSize">Số lượng hiển thị:</label>
+        <select id="pageSize" name="pageSize">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+        <input type="submit" value="Xem">
+    </form>
+    <p>
+        <a asp-action="CreateLocation">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.District)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ward)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Street)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.District)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ward)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Street)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+
+
+                        @Html.ActionLink("Edit", "EditLocation", new {  id=item.Id }) |
+                        @Html.ActionLink("Detail", "DetailLocation", new {  id=item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteLocation", new {  id=item.Id }) |
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="pagination">
+        @if (ViewBag.HasPreviousPage)
+        {
+            <a href="@Url.Action("ShowAllLocation", new { page = ViewBag.PreviousPage })">Previous</a>
+        }
+
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <span>@i</span>
+            }
+            else
+            {
+                <a href="@Url.Action("ShowAllLocation", new { page = i })">@i</a>
+            }
+        }
+
+        @if (ViewBag.HasNextPage)
+        {
+            <a href="@Url.Action("ShowAllLocation", new { page = ViewBag.NextPage })">Next</a>
+        }
+    </div>
+}
+

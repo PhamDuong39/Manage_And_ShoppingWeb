@@ -1,0 +1,61 @@
+﻿@model Data.Models.Bills
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Bills</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdUser" class="control-label"></label>
+                <select asp-for="IdUser" class ="form-control" asp-items="ViewBag.IdUser"></select>
+               
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCoupon" class="control-label"></label>
+                <select asp-for="IdCoupon" class ="form-control" asp-items="ViewBag.IdCoupon"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPaymentMethod" class="control-label"></label>
+                <select asp-for="IdPaymentMethod" class ="form-control" asp-items="ViewBag.IdPaymentMethod"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdShipAdressMethod" class="control-label"></label>
+                <select asp-for="IdShipAdressMethod" class ="form-control" asp-items="ViewBag.IdShipAdressMethod"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdLocation" class="control-label"></label>
+                <select asp-for="IdLocation" class ="form-control" asp-items="ViewBag.IdLocation"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>
+

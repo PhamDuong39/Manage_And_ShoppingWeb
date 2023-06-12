@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Data.Models.FavouriteShoes>
+
+@{
+	ViewData["Title"] = "Show";
+}
+
+<h1>Sản Phẩm Yêu Thích</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@foreach (var shoes in ViewData["Name"] as SelectList)
+					{
+						if (shoes.Value == item.IdShoeDetail.ToString())
+						{
+							@shoes.Text
+						}
+					}
+				</td>			
+			</tr>
+			<br />
+		<td>
+			@*@Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |*@
+			@Html.ActionLink("Chi Tiết", "Details", new {  id=item.Id  }) |
+			@Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
+		</td>
+		}
+</table>

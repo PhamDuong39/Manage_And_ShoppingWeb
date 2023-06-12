@@ -1,0 +1,128 @@
+﻿@model ProjectViews.Models.BillsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Createdate</th>
+                <th scope="col">Status</th>
+                <th scope="col">Location</th>
+                <th scope="col">Payment Method</th>
+                <th scope="col">Delivery Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>
+                    @foreach (var user in ViewData["lstUser"] as SelectList)
+                    {
+                        if (user.Value == Model.bill.IdUser.ToString())
+                        {
+                            @user.Text
+                        }
+                    }
+                </td>
+                <td>@Model.bill.CreateDate</td>
+                <td>@Model.bill.Status</td>
+                <td>
+                    @{
+                        var lstLocation = ViewData["lstLocation"] as List<SelectListItem>;
+                        var selectedUser = lstLocation.FirstOrDefault(user => user.Value == Model.bill.IdLocation.ToString());
+                    }
+                    @if (selectedUser != null)
+                    {
+                        @selectedUser.Text
+                    }
+                </td>
+                <td>
+                    @foreach (var pm in ViewData["lstPaymentmethod"] as SelectList)
+                    {
+                        if (pm.Value == Model.bill.IdPaymentMethod.ToString())
+                        {
+                            @pm.Text
+                        }
+                    }
+                </td>
+                <td>
+                    @foreach (var sm in ViewData["lstShipmethod"] as SelectList)
+                    {
+                        if (sm.Value == Model.bill.IdShipAdressMethod.ToString())
+                        {
+                            @sm.Text
+                        }
+                    }
+                </td>
+            </tr>
+            <table class="table">
+                <thead>
+                    <tr class="table-success">
+                        <th></th>
+                        <th>Ảnh mô tả</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá tiền</th>
+                        <th>Số lượng</th>
+                        <th>Tổng giá trị</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.lstBillDT)
+                {
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>image</td>
+                            <td>
+                                @foreach (var s in ViewData["lstShoes"] as SelectList)
+                                {
+                                    if (s.Value == item.IdShoeDetail.ToString())
+                                    {
+                                        @s.Text
+                                    }
+                                }
+                            </td>
+                            <td>@item.Price</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Quantity * item.Price)</td>
+                        </tr>
+                     
+                    </tbody>
+                }
+                <tr class="table-success">
+                    <th colspan="5">Tổng giá trị</th>
+                  
+                    <th>@Model.NoDiscountPrice</th>
+                </tr>
+                <tr class="table-success">
+                    <th colspan="5">Chi phí vận chuyển</th>
+
+                    <th>@Model.deliveryFee</th>
+                </tr>
+                <tr class="table-success">
+                    <th colspan="5">Giảm giá</th>
+
+                    <th>@Model.DiscountMoney</th>
+                </tr>
+                <tr class="table-success">
+                    <th colspan="5">Tổng tành tiền phải thanh toán</th>
+
+                    <th>@Model.sumPrice</th>
+                </tr>
+            </table>
+        </tbody>
+    </table>
+    
+</div>
+
+
+<div>
+    <a asp-action="Show">Back to List</a>
+</div>
+
