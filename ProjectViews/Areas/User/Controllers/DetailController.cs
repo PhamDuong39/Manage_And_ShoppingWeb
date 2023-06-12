@@ -235,12 +235,6 @@ namespace ProjectViews.Areas.User.Controllers
       {
         sizesShoe = size_shoeDetails.FirstOrDefault(p => p.IdSize == idSize);
       }
-
-      if (shoeDetails == null)
-      {
-        ViewBag.shoeDetailsGetByIdColorAndSize = null;
-      }
-      //get shoeDetail by idColor and idSize
       ViewBag.shoeDetailsGetByIdColorAndSize = shoeDetails.FirstOrDefault(p => p.Id == colorShoe.IdShoeDetail && p.Id == sizesShoe.IdShoeDetails);
     }
   }
