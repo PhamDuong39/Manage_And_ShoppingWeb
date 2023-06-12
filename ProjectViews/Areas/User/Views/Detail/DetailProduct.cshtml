@@ -101,7 +101,7 @@
                             listSize.Add(item.SizeValue);
                         }
                     }
-                    <form method="post" asp-action="GetAvailableQuantity">
+                    <form asp-controller="de" asp-action="getShoeByidColorAndSize">
                         <ul class="nav" id="myTab" role="tablist">
                             @foreach (var item in listColor.Distinct())
                             {
@@ -113,7 +113,8 @@
                         <ul class="nav nav-content mb-2">
                             @foreach (var item in listSize.Distinct())
                             {
-                                <a class="sizeinput" class="input-group size-option" value="@item" type="button"> @item</a>
+                                <input type="hidden" name="size" value="@item">
+                                <button type="submit" class="sizeinput">@item</button>
                             }
                         </ul>
                     </form>
@@ -172,18 +173,20 @@
                         </div>
                         <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
-                    @*@{
-                    var shoeDetailsGetByViewbag =   ViewBag.shoeDetailsGetByIdColorAndSize as ShoeDetails;
-                    }
-                    @if (shoeDetailsGetByViewbag.Status ==1 && shoeDetailsGetByViewbag.AvailableQuantity>=0)
+                    @if (ViewBag.shoes != null)
                     {
-                    <p class="text-danger">Status : Active </p>
-                    <p class="text-success">Available @shoeDetailsGetByViewbag.AvailableQuantity</p>
+                        if (ViewBag.shoes.GetType() == typeof(string))
+                        {
+                            string message = ViewBag.shoes as string;
+                            <p class="text-danger mt-3">@message</p>
+                        }
+                        else
+                        {
+                            var shoe = ViewBag.shoes as ShoeDetails;
+                            <p class="text-danger mt-2">Status: Active</p>
+                            <p class="text-success">Available: @shoe.AvailableQuantity</p>
+                        }
                     }
-                    else if (shoeDetailsGetByViewbag ==null)
-                    {
-                    <p>Object null</p>
-                    }*@
                     <div class="red_button btn mt-3 text-white">
                         <a>add to cart</a>
                     </div>
