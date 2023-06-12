@@ -1,10 +1,8 @@
 ﻿using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
-using System.Composition.Convention;
 using System.Text;
 
 namespace ProjectViews.Controllers

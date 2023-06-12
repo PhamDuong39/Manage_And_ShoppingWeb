@@ -59,11 +59,11 @@ else
                     @{ string extension = System.IO.Path.GetExtension(item.ImageSource); }
                     @if (imageExtensions.Contains(extension.Trim()))
                     {
-                        <img src="~/images/@item.ImageSource" height="100px">
+                            <img src="~/UserAsssets/images/@item.ImageSource" height="100px">
                     }
                     else
                     {
-                        <img src="~/images/anhbanh.jpg" height="100px">
+                        <img src="~/UserAsssets/images/anhbanh.jpg" height="100px">
                     }
                 </td>
                 <td>

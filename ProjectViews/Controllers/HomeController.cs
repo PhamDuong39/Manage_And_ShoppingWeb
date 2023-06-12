@@ -15,7 +15,6 @@ namespace ProjectViews.Controllers
 
         public IActionResult Index()
         {
-            ViewData["administrator"] = HttpContext.Session.GetString("Admin");
             return View();
         }
 
