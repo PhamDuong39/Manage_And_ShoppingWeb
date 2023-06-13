@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var user = ViewData["user"] == null ? "" : ViewData["user"] as string;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Colo Shop</title>
@@ -90,12 +93,26 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="account_selection">
-                                    <li>
-                                        <a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a>
-                                    </li>
+                                    @if (user == "")
+                                    {
+                                        <li a>
+                                            <a asp-area="User" asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a>
+                                        </li>
+                                        <li>
+                                            <a ><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li a>
+                                            <a asp-area="" asp-controller="" asp-action="">
+                                                <i class="fa fa-sign-in" aria-hidden="true"></i>@user
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="User" asp-controller="Account" asp-action="LogOutUser"><i class="fa fa-user-plus" aria-hidden="true"></i>Logout</a>
+                                        </li>
+                                    }
                                 </ul>
                             </li>
                         </ul>
@@ -147,9 +164,9 @@
                                 </a>
                             </li>
                             <li class="checkout">
-                                <a href="#">
+                                <a  asp-controller="CartDetail" asp-action="Show">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                    <span id="checkout_items" class="checkout_items">2</span>
+                                    <span id="checkout_items" class="checkout_items">20</span>
                                 </a>
                             </li>
                         </ul>

@@ -59,7 +59,6 @@ namespace ProjectViews.Areas.User.Controllers
                 {
                     HttpContext.Session.SetString("User", username);
                     return RedirectToAction("Index", "Home", new { area = "User" });
-
                 }
 
             }

@@ -8,9 +8,11 @@ using Newtonsoft.Json;
 using ProjectViews.Models;
 using System.Drawing;
 using System.Text;
+using ProjectViews.Areas.User.Models;
 
 namespace ProjectViews.Controllers
 {
+  [Area("User")]
   public class CartDetailController : Controller
   {
     private readonly HttpClient _httpClient;
@@ -22,7 +24,6 @@ namespace ProjectViews.Controllers
     [HttpGet]
     public async Task<IActionResult> Show()
     {
-
       string apiURL = $"https://localhost:7109/api/CartDetail";
       string apiUrlShoe = $"https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
       string apiImage = $"https://localhost:7109/api/Images/get-all-image";
@@ -50,7 +51,6 @@ namespace ProjectViews.Controllers
         model.cartDetail = item;
         model.Id = item.Id;
         model.quantity = item.Quantity;
-
         var shoe = shoes.FirstOrDefault(s => s.Id == item.IdShoeDetail);
         model.name = shoe.Name;
         model.price = shoe.SellPrice;

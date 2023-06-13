@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ProjectViews.Controllers
 {
+    [Area("User")]
     public class CartController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -64,7 +65,7 @@ namespace ProjectViews.Controllers
         //    }
         //    return this.View();
         //}
-       
+
         public async Task<IActionResult> Delete(Guid Id)
         {
             string apiURL = $"https://localhost:7109/api/Carts/delete?id={Id}";

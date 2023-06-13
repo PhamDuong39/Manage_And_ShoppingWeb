@@ -35,4 +35,24 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\CartDetail\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\CartDetail\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\CartDetail\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\CartDetail\Show.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Cart\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Cart\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Cart\Show.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Areas\User\Views\CartDetail\Create.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\CartDetail\Delete.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\CartDetail\Edit.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\CartDetail\Show.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\Cart\Create.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\Cart\Delete.cshtml" />
+    <AdditionalFiles Include="Areas\User\Views\Cart\Show.cshtml" />
+  </ItemGroup>
+
 </Project>
