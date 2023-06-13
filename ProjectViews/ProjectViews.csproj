@@ -45,14 +45,4 @@
     <_ContentIncludedByDefault Remove="Views\Cart\Show.cshtml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="Areas\User\Views\CartDetail\Create.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\CartDetail\Delete.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\CartDetail\Edit.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\CartDetail\Show.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\Cart\Create.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\Cart\Delete.cshtml" />
-    <AdditionalFiles Include="Areas\User\Views\Cart\Show.cshtml" />
-  </ItemGroup>
-
 </Project>
