@@ -65,7 +65,6 @@ namespace ProjectViews.Areas.User.Controllers
 				model.ImageSource = imageShoe.ImageSource;
 				lstModel.Add(model);
 			}
-
 			return View(lstModel);
 		}
 		//public async Task<IActionResult> Details(Guid Id)
@@ -111,7 +110,8 @@ namespace ProjectViews.Areas.User.Controllers
 			{
 				return this.RedirectToAction("Show");
 			}
-			return this.View();
+
+			return Ok();
 		}
 		[HttpGet]
 		public async Task<IActionResult> Delete2(Guid Id)

@@ -52,14 +52,13 @@ namespace ProjectViews.Areas.User.Controllers
                 if (role.RoleName == "Admin")
                 {
                     HttpContext.Session.SetString("Admin", username);
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                    
+                    return RedirectToAction("Index", "Home", new { area = "" });
+
                 }
                 else
                 {
                     HttpContext.Session.SetString("User", username);
                     return RedirectToAction("Index", "Home", new { area = "User" });
-                    
                 }
 
             }
@@ -68,7 +67,7 @@ namespace ProjectViews.Areas.User.Controllers
 		public IActionResult LogOutUser()
 		{
 			HttpContext.Session.Remove("User");
-			
+
 			return RedirectToAction("Login");
 		}
 

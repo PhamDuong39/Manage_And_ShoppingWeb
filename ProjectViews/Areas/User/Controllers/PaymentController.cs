@@ -57,12 +57,12 @@ namespace ProjectViews.Areas.User.Controllers
 			}
 
 
-			return View();
+			return Ok();
 		}
 
 		public async Task<IActionResult> ConfirmPay()
 		{
-			
+			return Ok();
 		}
 	}
 }

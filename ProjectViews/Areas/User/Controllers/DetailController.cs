@@ -181,5 +181,16 @@ namespace ProjectViews.Areas.User.Controllers
             }
             ViewBag.Feedbacks = lstFeedbacks;
         }
+
+        public async void GetShoe(string color , float size)
+        {
+            color = color.Remove(0, 1);
+            string apiUrl = $"https://localhost:7109/api/ShoeDetails/get-shoeDetails-by-Color-Size?colorName={color}&sizeNumber={size}";
+            var response = await _httpClient.GetAsync(apiUrl);
+            var apiData = await response.Content.ReadAsStringAsync();
+            var shoeDetails = JsonConvert.DeserializeObject<ShoeDetails>(apiData);
+            // add quantity shoe into session
+
+        }
     }
 }
