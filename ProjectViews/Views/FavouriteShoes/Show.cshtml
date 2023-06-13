@@ -9,6 +9,7 @@
 <p>
 	<a asp-action="Create">Create New</a>
 </p>
+<table>
 	<tbody>
 		@foreach (var item in Model)
 		{
@@ -21,7 +22,7 @@
 							@shoes.Text
 						}
 					}
-				</td>			
+				</td>
 			</tr>
 			<br />
 		<td>
@@ -30,4 +31,5 @@
 			@Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
 		</td>
 		}
+	</tbody>
 </table>

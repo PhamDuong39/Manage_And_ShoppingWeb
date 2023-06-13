@@ -14,10 +14,10 @@ namespace ProjectViews.Areas.User.Controllers
         {
             _httpClient = new HttpClient();
             GetFeedback(nameShoe);
-            getShoeByidColorAndSize(null,0);
         }
 
         private string nameShoe;
+        private List<ShoeCategory> _shoeCategories;
 
         public async Task<IActionResult> DetailProduct(string name)
         {
@@ -148,7 +148,8 @@ namespace ProjectViews.Areas.User.Controllers
                 lstShoes.Add(shoe);
             }
 
-            return View(lstShoes);
+            _shoeCategories = lstShoes;
+            return View(_shoeCategories);
         }
 
         public ActionResult GetPdf()
@@ -178,67 +179,7 @@ namespace ProjectViews.Areas.User.Controllers
                     lstFeedbacks = feedbacks.Where(p => p.IdShoeDetail == item.Id).ToList();
                 }
             }
-
             ViewBag.Feedbacks = lstFeedbacks;
-        }
-  
-        public async void getShoeByidColorAndSize(string color, float size)
-        {
-            //get shoes from api
-            var apiUrls = "https://localhost:7109/api/ShoeDetails/get-all-shoeDetails";
-            var responses = await _httpClient.GetAsync(apiUrls); // goi api lay data
-            var apiDatas = await responses.Content.ReadAsStringAsync(); // doc data tra ve
-            var shoeDetails = JsonConvert.DeserializeObject<List<ShoeDetails>>(apiDatas);
-            //lay du lieu tu bang size_shoeDetail
-            var apiUrlsize_shoeDetail = "https://localhost:7109/api/SIzes_ShoeDetails/get-all-size-shoe-details";
-            var responsesize_shoeDetail = await _httpClient.GetAsync(apiUrlsize_shoeDetail);
-            var apiDatasize_shoeDetail = await responsesize_shoeDetail.Content.ReadAsStringAsync();
-            var size_shoeDetails = JsonConvert.DeserializeObject<List<Sizes_ShoeDetails>>(apiDatasize_shoeDetail);
-            //lay du lieu tu bang color_shoeDetail
-            var apiUrlcolor_shoeDetail = "https://localhost:7109/api/Color_ShoeDetails/get-all-color_shoeDetails";
-            var apiDatacolor_shoeDetail = await _httpClient.GetAsync(apiUrlcolor_shoeDetail);
-            var apiColorShoesDetails = await apiDatacolor_shoeDetail.Content.ReadAsStringAsync();
-            var color_shoeDetails = JsonConvert.DeserializeObject<List<Color_ShoeDetails>>(apiColorShoesDetails);
-            //lay du lieu tu bang color
-            var apiUrlcolr = "https://localhost:7109/api/Color/get-all-colors";
-            var responsecolr = await _httpClient.GetAsync(apiUrlcolr);
-            var apiDatacolr = await responsecolr.Content.ReadAsStringAsync();
-            var colors = JsonConvert.DeserializeObject<List<Colors>>(apiDatacolr);
-            //lay dữ liệu size từ bảng Size
-            var apiUrlsize = "https://localhost:7109/api/Size/get-all-size";
-            var responsesize = await _httpClient.GetAsync(apiUrlsize);
-            var apiDatasize = await responsesize.Content.ReadAsStringAsync();
-            var sizes = JsonConvert.DeserializeObject<List<Sizes>>(apiDatasize);
-            //get shoeDetail by idColor and idSize
-            var selectedColor = colors.FirstOrDefault(p => p.ColorName == color);
-            var selectedSize = sizes.FirstOrDefault(p => p.SizeNumber == size);
-            // Check if the selected color and size exist
-            if (selectedColor == null || selectedSize == null)
-            {
-                ViewBag.shoes = "Please choose a valid color and size.";
-            }
-            else
-            {
-                // Get the shoe details based on the selected color and size
-                var shoeColorDetails = color_shoeDetails.Where(p => p.IdColor == selectedColor.Id);
-                var shoeSizeDetails = size_shoeDetails.Where(p => p.IdSize == selectedSize.Id);
-
-                // Find the matching shoe details that have both the selected color and size
-                var matchingShoeDetails = shoeDetails
-                    .Where(sd => shoeColorDetails.Any(csd => csd.IdShoeDetail == sd.Id) &&
-                                 shoeSizeDetails.Any(ssd => ssd.IdShoeDetails == sd.Id));
-               
-                if (matchingShoeDetails.Any())
-                {
-                    // If there are matching shoe details, you can store them in a list or display the first one
-                    var matchingShoe = matchingShoeDetails.First();
-                    ViewBag.shoes = matchingShoe;
-                }
-                else
-                {
-                    ViewBag.shoes = "No matching shoe details found.";
-                }
-            }
         }
     }
 }

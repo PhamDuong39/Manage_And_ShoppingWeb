@@ -5,6 +5,7 @@
     ViewBag.Title = "Details";
     Layout = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
 }
+
 <div class="container single_product_container">
     <div class="row">
         <div class="col">
@@ -34,17 +35,11 @@
                 <div class="row">
                     <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
                         <div class="single_product_thumbnails">
-                            @{
-                                var id = new Guid();
-                            }
                             @foreach (var item in Model)
                             {
                                 <ul>
                                     <li>
                                         <img src="~/UserAsssets/images/@item.ImageSource" alt="" data-image="~/UserAsssets/images/@item.ImageSource">
-                                        @{
-                                            id = item.Id;
-                                        }
                                     </li>
                                 </ul>
                             }
@@ -52,7 +47,7 @@
                     </div>
                     <div class="col-lg-9 image_col order-lg-2 order-1">
                         <div class="single_product_image">
-                            <img class="single_product_image_background" src="~/UserAsssets/images/@Model.Find(p=>p.Id == id ).ImageSource" alt="Loi">
+                            <img class="single_product_image_background" src="~/UserAsssets/images/@Model[0].ImageSource" alt="Loi">
                         </div>
                     </div>
                 </div>
@@ -101,23 +96,20 @@
                             listSize.Add(item.SizeValue);
                         }
                     }
-                    <form asp-controller="de" asp-action="getShoeByidColorAndSize">
-                        <ul class="nav" id="myTab" role="tablist">
-                            @foreach (var item in listColor.Distinct())
-                            {
-                                <input name="color" class="nav-link color-option" style="height: 35px; width: 20px; margin-right: 10px; margin-bottom: 10px; background-color: @item; border-radius: 50%;" value="@item">
-                            }
-                        </ul>
-
-                        <p>Select Size: </p>
-                        <ul class="nav nav-content mb-2">
-                            @foreach (var item in listSize.Distinct())
-                            {
-                                <input type="hidden" name="size" value="@item">
-                                <button type="submit" class="sizeinput">@item</button>
-                            }
-                        </ul>
-                    </form>
+                    <ul class="nav" id="myTab" role="tablist">
+                        @foreach (var item in listColor.Distinct())
+                        {
+                            <input name="color" class="nav-link color-option" style="height: 35px; width: 20px; margin-right: 10px; margin-bottom: 10px; background-color: @item; border-radius: 50%;" value="@item">
+                        }
+                    </ul>
+                    <p>Select Size: </p>
+                    <ul class="nav nav-content mb-2">
+                        @foreach (var item in listSize.Distinct())
+                        {
+                            <input type="hidden" name="size" value="@item">
+                            <button class="sizeinput">@item</button>
+                        }
+                    </ul>
                     <style>
                         .sizeinput {
                             width: 30px;
@@ -144,21 +136,6 @@
                             animation: border 1s infinite;
                         }
                     </style>
-
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                        $(document).ready(function () {
-                            $('.color-option').click(function () {
-                                $('.color-option').removeClass('selected-color');
-                                $(this).addClass('selected-color');
-                            });
-
-                            $('.sizeinput').click(function () {
-                                $('.sizeinput').removeClass('selected-size');
-                                $(this).addClass('selected-size');
-                            });
-                        });
-                    </script>
                     <span class="text-uppercase mt-2">Size :</span> <a asp-action="GetPdf" class=" text-danger">How to choose a size</a>
                     <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span>Quantity:</span>
@@ -173,25 +150,14 @@
                         </div>
                         <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
-                    @if (ViewBag.shoes != null)
-                    {
-                        if (ViewBag.shoes.GetType() == typeof(string))
-                        {
-                            string message = ViewBag.shoes as string;
-                            <p class="text-danger mt-3">@message</p>
-                        }
-                        else
-                        {
-                            var shoe = ViewBag.shoes as ShoeDetails;
-                            <p class="text-danger mt-2">Status: Active</p>
-                            <p class="text-success">Available: @shoe.AvailableQuantity</p>
-                        }
-                    }
+                    <div ng-app="myDetail" ng-controller="myCtrl" ng-init="getData()">
+                        <p class="text-danger mt-3"> Status : {{product.Status}}</p>
+                        <p> Available Quantity : {{product.AvailableQuantity}}</p>
+                    </div>
                     <div class="red_button btn mt-3 text-white">
                         <a>add to cart</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -202,216 +168,214 @@
 
 <div class="tabs_section_container">
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="tabs_container">
-                    <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
-                        <li class="tab active" data-active-tab="tab_1">
-                            <span>Description</span>
-                        </li>
-                        <li class="tab" data-active-tab="tab_2">
-                            <span>Additional Information</span>
-                        </li>
-                        <li class="tab" data-active-tab="tab_3">
-                            <span>Reviews (2)</span>
-                        </li>
-                    </ul>
+<div class="container">
+<div class="row">
+    <div class="col">
+        <div class="tabs_container">
+            <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+                <li class="tab active" data-active-tab="tab_1">
+                    <span>Description</span>
+                </li>
+                <li class="tab" data-active-tab="tab_2">
+                    <span>Additional Information</span>
+                </li>
+                <li class="tab" data-active-tab="tab_3">
+                    <span>Reviews (2)</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+
+        <!-- Tab Description -->
+        @{
+            var listDecription1 = shoes.Decriptions1;
+            var listDecription2 = shoes.Decriptions2;
+            var listDecription3 = shoes.Decriptions3;
+            var soureImage = new List<string>();
+            foreach (var item in Model)
+            {
+                soureImage.Add(item.ImageSource);
+            }
+        }
+        <div id="tab_1" class="tab_container active">
+            <div class="row">
+                <div class="col-lg-5 desc_col">
+                    <div class="tab_title">
+                        <h4>Description</h4>
+                    </div>
+                    <div class="tab_text_block">
+                        <h2>Pocket cotton sweatshirt</h2>
+                        <p>@listDecription1</p>
+                    </div>
+                    <div class="tab_image">
+                        @if (soureImage[0] != null)
+                        {
+                            <img src="~/UserAsssets/images/@soureImage[0]" alt="">
+                        }
+                        else
+                        {
+                            <img src="" alt="Not Found">
+                        }
+                    </div>
+                    <div class="tab_text_block">
+                        <h2>Pocket cotton sweatshirt</h2>
+                        <p>@listDecription2</p>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-2 desc_col">
+                    <div class="tab_image">
+                        @if (soureImage[1] != null)
+                        {
+                            <img src="~/UserAsssets/images/@soureImage[1]" alt="">
+                        }
+                        else
+                        {
+                            <img src="" alt="Not Found">
+                        }
+                    </div>
+                    <div class="tab_text_block">
+                        <h2>Pocket cotton sweatshirt</h2>
+                        <p>@listDecription3</p>
+                    </div>
+                    <div class="tab_image desc_last">
+                        @if (soureImage[2] != null)
+                        {
+                            <img src="~/UserAsssets/images/@soureImage[2]" alt="">
+                        }
+                        else
+                        {
+                            <img src="" alt="Not Found">
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
 
-                <!-- Tab Description -->
-                @{
-                    var listDecription1 = shoes.Decriptions1;
-                    var listDecription2 = shoes.Decriptions2;
-                    var listDecription3 = shoes.Decriptions3;
-                    var soureImage = new List<string>();
-                    foreach (var item in Model)
-                    {
-                        soureImage.Add(item.ImageSource);
+        <!-- Tab Additional Info -->
+
+        <div id="tab_2" class="tab_container">
+            <div class="row">
+                <div class="col additional_info_col">
+                    <div class="tab_title additional_info_title">
+                        <h4>Additional Information</h4>
+                    </div>
+                    <p>
+                        COLOR:
+                        @foreach (var item in listColor.Distinct())
+                        {
+                            <span style="color: @item"> @item, </span>
+                        }
+                    </p>
+                    <p>
+                        SIZE:
+                        @foreach (var item in listSize.Distinct())
+                        {
+                            <span>@item, </span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Reviews -->
+
+        <div id="tab_3" class="tab_container">
+            <div class="row">
+
+                <!-- User Reviews -->
+
+                <div class="col-lg-6 reviews_col">
+                    <div class="tab_title reviews_title">
+                        <h4>Reviews (2)</h4>
+                    </div>
+                    @{
+                        var _httpClient = new HttpClient();
+                        //get list review from viewbag
+                        var listFdback = ViewBag.Feedbacks as List<Feedbacks>;
+                        var apiUrl = "https://localhost:7109/api/User/get-all-user";
+                        var response = await _httpClient.GetAsync(apiUrl);
+                        var apidata = await response.Content.ReadAsStringAsync();
+                        var users = JsonConvert.DeserializeObject<List<Users>>(apidata);
                     }
-                }
-                <div id="tab_1" class="tab_container active">
-                    <div class="row">
-                        <div class="col-lg-5 desc_col">
-                            <div class="tab_title">
-                                <h4>Description</h4>
-                            </div>
-                            <div class="tab_text_block">
-                                <h2>Pocket cotton sweatshirt</h2>
-                                <p>@listDecription1</p>
-                            </div>
-                            <div class="tab_image">
-                                @if (soureImage[0] != null)
-                                {
-                                    <img src="~/UserAsssets/images/@soureImage[0]" alt="">
-                                }
-                                else
-                                {
-                                    <img src="" alt="Not Found">
-                                }
-                            </div>
-                            <div class="tab_text_block">
-                                <h2>Pocket cotton sweatshirt</h2>
-                                <p>@listDecription2</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 offset-lg-2 desc_col">
-                            <div class="tab_image">
-                                @if (soureImage[1] != null)
-                                {
-                                    <img src="~/UserAsssets/images/@soureImage[1]" alt="">
-                                }
-                                else
-                                {
-                                    <img src="" alt="Not Found">
-                                }
-                            </div>
-                            <div class="tab_text_block">
-                                <h2>Pocket cotton sweatshirt</h2>
-                                <p>@listDecription3</p>
-                            </div>
-                            <div class="tab_image desc_last">
-                                @if (soureImage[2] != null)
-                                {
-                                    <img src="~/UserAsssets/images/@soureImage[2]" alt="">
-                                }
-                                else
-                                {
-                                    <img src="" alt="Not Found">
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab Additional Info -->
-
-                <div id="tab_2" class="tab_container">
-                    <div class="row">
-                        <div class="col additional_info_col">
-                            <div class="tab_title additional_info_title">
-                                <h4>Additional Information</h4>
-                            </div>
-                            <p>
-                                COLOR:
-                                @foreach (var item in listColor.Distinct())
-                                {
-                                    <span style="color: @item"> @item, </span>
-                                }
-                            </p>
-                            <p>
-                                SIZE:
-                                @foreach (var item in listSize.Distinct())
-                                {
-                                    <span>@item, </span>
-                                }
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab Reviews -->
-
-                <div id="tab_3" class="tab_container">
-                    <div class="row">
-
-                        <!-- User Reviews -->
-
-                        <div class="col-lg-6 reviews_col">
-                            <div class="tab_title reviews_title">
-                                <h4>Reviews (2)</h4>
-                            </div>
-                            @{
-                                var _httpClient = new HttpClient();
-                                //get list review from viewbag
-                                var listFdback = ViewBag.Feedbacks as List<Feedbacks>;
-                                var apiUrl = "https://localhost:7109/api/User/get-all-user";
-                                var response = await _httpClient.GetAsync(apiUrl);
-                                var apidata = await response.Content.ReadAsStringAsync();
-                                var users = JsonConvert.DeserializeObject<List<Users>>(apidata);
-                            }
-                            @if (listFdback.Count() == 0)
-                            {
-                                <h1>There are no reviews yet.</h1>
-                            }
-                            else
-                            {
-                                <!-- User Review -->
-                                @foreach (var item in listFdback)
-                                {
-                                    <div class="user_review_container d-flex flex-column flex-sm-row">
-                                        <div class="user">
-                                            <div class="user_pic"></div>
-                                            <div class="user_rating">
-                                                <ul class="star_rating">
-                                                    @for (var i = 0; i < item.RatingStar; i++)
-                                                    {
-                                                        <li>
-                                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                                        </li>
-                                                    }
-                                                    @for (var i = 0; i < 5 - item.RatingStar; i++)
-                                                    {
-                                                        <li>
-                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        @{
-                                            var userName = users.FirstOrDefault(p => p.Id == item.IdUser).Fullname;
-                                        }
-                                        <div class="review">
-                                            <div class="review_date">27 Aug 2016</div>
-                                            <div class="user_name">@userName</div>
-                                            <p>@item.Note</p>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                            <!-- User Review -->
-
-                            <div class="col-lg-6 add_review_col">
-
-                                <div class="add_review">
-                                    <form id="review_form" action="post">
-                                        <div>
-                                            <h1>Add Review</h1>
-                                            <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
-                                            <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
-                                        </div>
-                                        <div>
-                                            <h1>Your Rating:</h1>
-                                            <ul class="user_star_rating">
+                    @if (listFdback.Count() == 0)
+                    {
+                        <h1>There are no reviews yet.</h1>
+                    }
+                    else
+                    {
+                        <!-- User Review -->
+                        @foreach (var item in listFdback)
+                        {
+                            <div class="user_review_container d-flex flex-column flex-sm-row">
+                                <div class="user">
+                                    <div class="user_pic"></div>
+                                    <div class="user_rating">
+                                        <ul class="star_rating">
+                                            @for (var i = 0; i < item.RatingStar; i++)
+                                            {
                                                 <li>
                                                     <i class="fa fa-star" aria-hidden="true"></i>
                                                 </li>
-                                                <li>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </li>
+                                            }
+                                            @for (var i = 0; i < 5 - item.RatingStar; i++)
+                                            {
                                                 <li>
                                                     <i class="fa fa-star-o" aria-hidden="true"></i>
                                                 </li>
-                                            </ul>
-                                            <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
-                                        </div>
-                                        <div class="text-left text-sm-right">
-                                            <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
-                                        </div>
-                                    </form>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                @{
+                                    var userName = users.FirstOrDefault(p => p.Id == item.IdUser).Fullname;
+                                }
+                                <div class="review">
+                                    <div class="review_date">27 Aug 2016</div>
+                                    <div class="user_name">@userName</div>
+                                    <p>@item.Note</p>
                                 </div>
                             </div>
+                        }
+                    }
+                    <!-- User Review -->
+
+                    <div class="col-lg-6 add_review_col">
+
+                        <div class="add_review">
+                            <form id="review_form" action="post">
+                                <div>
+                                    <h1>Add Review</h1>
+                                    <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
+                                    <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
+                                </div>
+                                <div>
+                                    <h1>Your Rating:</h1>
+                                    <ul class="user_star_rating">
+                                        <li>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        </li>
+                                    </ul>
+                                    <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
+                                </div>
+                                <div class="text-left text-sm-right">
+                                    <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -419,3 +383,8 @@
         </div>
     </div>
 </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="~/js/Details.js"></script>
