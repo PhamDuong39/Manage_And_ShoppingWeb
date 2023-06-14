@@ -1,4 +1,4 @@
-﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿    // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API_Core.Controllers
 {
@@ -125,6 +125,7 @@ namespace API_Core.Controllers
             shoeDetails.IdSale = idSale;
             return this._iShoesDetails.Update(shoeDetails);
         }
+
         //get by id color and id size
         [HttpGet("get-shoeDetails-by-Color-Size")]
         public ShoeDetails GetShoeByColorAndSize(string colorName, float sizeNumber)
@@ -144,5 +145,19 @@ namespace API_Core.Controllers
                 sd.Sizes_ShoeDetails.Any(ssd => ssd.IdSize == selectedSize.Id));
             return matchingShoeDetails;
         }
+
+
+
+        //update quanity by id
+        [HttpPut("update-quantity-by-id")]
+        public string UpdateQuantity(Guid id, int quantity)
+        {
+            var shoeDetails = this._iShoesDetails.GetAll().FirstOrDefault(p => p.Id == id);
+            shoeDetails.AvailableQuantity = quantity;
+            this._iShoesDetails.Update(shoeDetails);
+            return "Update quantity success";
+        }
+
+
     }
 }

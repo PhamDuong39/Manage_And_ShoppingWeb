@@ -140,7 +140,7 @@ namespace ProjectViews.Controllers
                 TempData["Message"] = "Giỏ hàng không tồn tại";
                 return RedirectToAction("Show");
             }
-
+            
             foreach (var cartDetail in cartDetails)
             {
                 var shoeDetail = _shoeRepository.GetAll().FirstOrDefault(p => p.Id == cartDetail.IdShoeDetail);

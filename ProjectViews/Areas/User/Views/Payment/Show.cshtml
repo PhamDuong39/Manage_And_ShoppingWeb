@@ -1,0 +1,150 @@
+﻿@model ProjectViews.Areas.User.Models.PaymentViewModel
+@{
+    ViewData["Title"] = "Show";
+    Layout = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
+}
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Show";
+    List<string> imageExtensions = new List<string>()
+    {
+        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+    };
+}
+
+<h1>Show</h1>
+
+@if (Model.listCartItems.Count == 0)
+{
+    <h1>Bạn chưa thêm bất kì sản phẩm nào vào giỏ hàng. <a asp-action="">Đi tới trang sản phẩm ?</a> </h1>
+}
+else
+{
+    <table style="margin-top: 100px;" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Kích cỡ</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.listCartItems)
+            {
+                <tr>
+                    <td>
+                        @{
+                            string extension = System.IO.Path.GetExtension(item.ImageSource);
+                        }
+                        @if (imageExtensions.Contains(extension.Trim()))
+                        {
+                            <img src="~/images/@item.ImageSource" height="100px">
+                        }
+                        else
+                        {
+                            <img src="~/images/anhbanh.jpg" height="100px">
+                        }
+                    </td>
+                    <td>@item.ShoeName</td>
+                    <td>@item.sizeNumber</td>
+                    <td>@item.price</td>
+                    <td>@item.quantity</td>
+                    <td>@item.SumPriceOfOne</td>
+                    <td>
+                        Delete
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+    <h3>Tam tinh: @Model.TamTinh</h3>
+    <h5>Phi van chuyen: + @Model.Shipping</h5>
+    <h5>Ma giam gia: - @Model.GiamGiaVoucherPercent</h5>
+    <h3>Tong tien phai thanh toan: @Model.TongTienPhaiTra</h3>
+
+    <form method="post" asp-action="ConfirmPay" class="row gy-2 gx-3 align-items-center">
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Tên người nhận</label>
+            <input type="text" class="form-control" id="autoSizingInput" value="@Model.User.Fullname">
+        </div>
+
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingSelect">Phương thức thanh toán</label>
+            <select name="idPaymentMethod" class="form-select" id="autoSizingSelect">
+                @foreach (var item in Model.paymentMethods)
+                {
+                    <option value="@item.Id">@item.NameMethod</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingSelect">Phương thức vận chuyển thanh toán</label>
+            <select name="idShipMethod" class="form-select" id="autoSizingSelect">
+                @foreach (var item in Model.shipAdressMethods)
+                {
+                    <option value="@item.Id">@item.NameAddress</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingSelect">Voucher</label>
+            <select name="idCoupon" class="form-select" id="autoSizingSelectDiscount" onchange="updateDiscountValue()">
+                @foreach (var item in Model.coupons)
+                {
+                    <option value="@item.Id">@item.VoucherName @item.DiscountValue</option>
+                }
+            </select>
+        </div>
+
+        <h3>Discount Value: <span id="discountValue"></span></h3>
+
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Số điện thoại</label>
+            <input type="text" class="form-control" id="autoSizingInput" value="@Model.User.Phonenumber">
+        </div>
+
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Tỉnh</label>
+            <input name="tinh" type="text" class="form-control" id="autoSizingInput" >
+        </div>
+         <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Huyện</label>
+            <input name="huyen" type="text" class="form-control" id="autoSizingInput" >
+        </div>
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Xã</label>
+            <input name="xa" type="text" class="form-control" id="autoSizingInput" >
+        </div>
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Đường</label>
+            <input name="duong" type="text" class="form-control" id="autoSizingInput" >
+        </div>
+        
+        <div class="col-auto">
+            <label class="visually-hidden" for="autoSizingInput">Địa chỉ</label>
+            <input name="diachi" type="text" class="form-control" id="autoSizingInput" >
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+}
+
+<script>
+    function updateDiscountValue() {
+        var selectElement = document.getElementById("autoSizingSelectDiscount");
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        var discountValue = selectedOption.text.split(" ")[1]; // Lấy giá trị DiscountValue từ tên option
+        document.getElementById("discountValue").innerText = discountValue;
+    }
+</script>
