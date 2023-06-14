@@ -39,9 +39,10 @@ namespace API_Core.Controllers
 
         // POST api/<BillController>
         [HttpPost("CreateBill")]
-        public bool CreateBill(Guid IdUser, string Note, int status, Guid IdCoupon, Guid IdShipMethod, Guid IdLocation, Guid IdPaymentMethod)
+        public bool CreateBill(Guid idBill, Guid IdUser, string Note, int status, Guid IdCoupon, Guid IdShipMethod, Guid IdLocation, Guid IdPaymentMethod)
         {
             Bills bill = new Bills();
+            bill.Id = idBill;
             bill.IdUser = IdUser;
             bill.CreateDate = DateTime.Now;
             bill.Note = Note;
