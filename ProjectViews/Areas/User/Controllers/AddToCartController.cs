@@ -44,7 +44,8 @@ public class AddToCartController : Controller
             if (responseCart.IsSuccessStatusCode)
             {
                 //thay bang code in view cart
-                return Content("Add thanh cong");
+                //show cart detail in area user
+                return RedirectToAction("Show", "CartDetail", "User");
             }
             return BadRequest();
 

@@ -39,30 +39,15 @@ namespace API_Core.Controllers
         [HttpPost("Create-Coupons")]
         public bool CreateCoupons(int DiscountValue, int Quantity, string VoucherName)
         {
-            
-           
             Coupons coupon = new Coupons();
             coupon.DiscountValue = DiscountValue;
             coupon.Quantity = Quantity;
             coupon.VoucherName = VoucherName;
             coupon.TimeStart = DateTime.Now;
             coupon.TimeEnd = DateTime.Now.AddDays(7);
-            string formattedStartDate = coupon.TimeStart.ToString("yyyy-MM-ddTHH:mm:ss");
-            string formattedEndDate = coupon.TimeEnd.ToString("yyyy-MM-ddTHH:mm:ss");
-
-            // Kiểm tra hạn sử dụng phải lớn hơn 6 giờ
-            //DateTime timeEnd = DateTime.Now.AddHours(6);
-            //if (coupon.TimeStart > timeEnd)
-            //{
-            //    coupon.TimeEnd = coupon.TimeStart.AddDays(7);
-            //}
-            //else
-            //{
-            //    coupon.TimeEnd = timeEnd.AddDays(7);
-            //}
             return _irepos.Create(coupon);
         }
-        
+
 
         // PUT api/<BillController>/5
         [HttpPut("edit-Coupons-{id}")]

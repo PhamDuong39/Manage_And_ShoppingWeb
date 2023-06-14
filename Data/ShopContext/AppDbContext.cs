@@ -24,7 +24,8 @@ namespace Data.ShopContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=LAPTOP-25M23VCQ\\SQLEXPRESS;Initial Catalog = ShoeShop_DB;Integrated Security=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer(
+                "Server=localhost,1433;Database=DbCS5_Test;User Id=SA;Password=Dthai16gg!;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

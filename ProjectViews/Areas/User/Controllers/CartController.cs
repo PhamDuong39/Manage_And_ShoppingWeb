@@ -98,7 +98,7 @@ namespace ProjectViews.Areas.User.Controllers
 			var response = await _httpClient.GetAsync(apiURL);
 			var apiData = await response.Content.ReadAsStringAsync();
 			var cartdetail = JsonConvert.DeserializeObject<CartDetails>(apiData);
-			return View(cartdetail);
+			return Ok(cartdetail);
 		}
 		public async Task<IActionResult> Edit(Guid Id, CartDetails cartDetails)
 		{
