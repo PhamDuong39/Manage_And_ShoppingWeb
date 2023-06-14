@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ProjectViews.Models.CartDetailModel>;
 @{
+	Layout = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
 	ViewData["Title"] = "Show";
 }
 @{
@@ -26,6 +27,9 @@
 			</th>
 			<th>
 
+			</th>
+			<th>
+				Size
 			</th>
 			<th>
 				Số lượng
@@ -57,6 +61,9 @@
 					{
 						<img src="~/images/anhbanh.jpg" height="100px">
 					}
+				</td>
+				<td>
+					@item.Size
 				</td>
 				<td>
 
@@ -94,12 +101,10 @@
 }
 <h3>Tổng Thanh Toán : <a style="color:red">@sumPrice</a> <a style="color:black">VND</a> </h3>
 <center>
-	<form method="post" asp-action="Pay" asp-controller="CartDetail">
-        <button type="submit" style="background-color: red">
+	<form>
+		<button asp-controller="Payment" asp-action="Show" type="submit" style="background-color: red">
             <div class="d-flex justify-content-between">
-                <span>
-                    Thanh toán
-                </span>
+				Thanh Toan
             </div>
         </button>
     </form>
