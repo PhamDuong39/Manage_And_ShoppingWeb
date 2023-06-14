@@ -14,6 +14,6 @@ namespace ProjectViews.Models
         public int quantity { get; set; }
         public int ToTalPrice { get; set; }
         public string ImageSource { get; set; }
-
+        public float Size { get; set; }
     }
 }

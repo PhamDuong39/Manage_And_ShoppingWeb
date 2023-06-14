@@ -93,7 +93,6 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- Main Navigation -->
 
 			<div class="main_nav_container">
@@ -110,6 +109,7 @@
 									<li><a href="#">promotion</a></li>
 									<li><a href="#">pages</a></li>
 									<li><a href="#">blog</a></li>
+									<li><a asp-controller="FavouriteShoes" asp-action="Show">FavouriteShoes</a></li>
 									<li><a href="contact.html">contact</a></li>
 								</ul>
 								<ul class="navbar_user">
@@ -120,8 +120,8 @@
 									}
 									<li><a ><i class="fa fa-user" aria-hidden="true"></i></a></li>
 									<li class="checkout">
-										<a href="#">
-											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+										<a asp-controller="CartDetail" asp-action="Show">
+											<i class="fa fa-shopping-cart" aria-hidden="true" ></i>
 											<span id="checkout_items" class="checkout_items">2</span>
 										</a>
 									</li>
