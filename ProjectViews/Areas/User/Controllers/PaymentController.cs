@@ -9,6 +9,7 @@ using System.Text;
 
 namespace ProjectViews.Areas.User.Controllers
 {
+
     [Area("User")]
     public class PaymentController : Controller
     {
@@ -224,4 +225,5 @@ namespace ProjectViews.Areas.User.Controllers
             return Content("thanh toan ok");
         }
     }
+
 }
