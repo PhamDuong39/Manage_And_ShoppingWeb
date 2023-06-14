@@ -18,6 +18,13 @@ namespace API_Core.Controllers
 
         private readonly IAllRepositories<ShoeDetails> _iShoesDetails;
 
+        private readonly IAllRepositories<Colors> _color;
+
+        private readonly IAllRepositories<Color_ShoeDetails> _colorShoeDetails;
+
+        private readonly IAllRepositories<Sizes> _size;
+
+        private readonly IAllRepositories<Sizes_ShoeDetails> _sizeShoeDetails;
         public ShoeDetailsController()
         {
             var _shoesDetails = new AllRepositories1<ShoeDetails>(this._context, this._context.ShoeDetails);
@@ -119,6 +126,27 @@ namespace API_Core.Controllers
             return this._iShoesDetails.Update(shoeDetails);
         }
 
+        //get by id color and id size
+        [HttpGet("get-shoeDetails-by-Color-Size")]
+        public ShoeDetails GetShoeByColorAndSize(string colorName, float sizeNumber)
+        {
+            // Get the color and size entities based on the provided values
+            var selectedColor =
+                _context.Colors.FirstOrDefault(c => c.ColorName.ToLower().Trim() == colorName.ToLower().Trim());
+            var selectedSize = _context.Sizes.FirstOrDefault(s => s.SizeNumber == sizeNumber);
+
+            if (selectedColor == null || selectedSize == null)
+            {
+                return null; // Return null if the color or size is not found
+            }
+            // Find the matching shoe details that have both the selected color and size
+            var matchingShoeDetails = _context.ShoeDetails.FirstOrDefault(sd =>
+                sd.Color_ShoeDetails.Any(csd => csd.IdColor == selectedColor.Id) &&
+                sd.Sizes_ShoeDetails.Any(ssd => ssd.IdSize == selectedSize.Id));
+            return matchingShoeDetails;
+        }
+
+
 
         //update quanity by id
         [HttpPut("update-quantity-by-id")]
@@ -129,6 +157,7 @@ namespace API_Core.Controllers
             this._iShoesDetails.Update(shoeDetails);
             return "Update quantity success";
         }
+
 
     }
 }
